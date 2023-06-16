@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:simple_meal_app/providers/filters_provider.dart';
 
-class FilterParameter extends StatelessWidget {
+class FilterParameter extends ConsumerWidget {
   const FilterParameter({
     Key? key,
     required this.title,
     this.subtitle,
-    required this.value,
-    required this.onChanged,
+    required this.filterType,
   }) : super(key: key);
 
   final String title;
   final String? subtitle;
-  final bool value;
-  final Function(bool) onChanged;
+  final FilterType filterType;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final filter = ref.watch(filterProvider);
+
     return SwitchListTile(
-      value: value,
+      value: filter[filterType]!,
       onChanged: (newValue){
-        onChanged(newValue);
+        ref.read(filterProvider.notifier).setFilter(filterType, newValue);
       },
       title: Text(
         title,

@@ -2,46 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simple_meal_app/providers/meals_provider.dart';
 
-import 'package:simple_meal_app/data/dummy_data.dart';
 import 'package:simple_meal_app/models/category.dart';
-import 'package:simple_meal_app/screens/filter_screen.dart';
 import 'package:simple_meal_app/screens/meals_screen.dart';
 import 'package:simple_meal_app/utils/app_layout.dart';
 
 class CategoryGridItem extends ConsumerWidget {
   final Category category;
-  final Function toggleFavoriteMeal;
-  final Map<FilterType, bool> filters;
 
   const CategoryGridItem({
     Key? key,
     required this.category,
-    required this.toggleFavoriteMeal,
-    required this.filters,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, ref) {
     final displayWidth = AppLayout.displayWidth(context);
-    final meals = ref.watch(mealsProvider);
+    final filteredMeals = ref.watch(filteredMealsProvider(category.id));
 
     return InkWell(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) {
           return MealsScreen(
             title: category.title,
-            meals: meals
-                .where((element) => element.categories.contains(category.id) &&
-                    (!filters[FilterType.glutenFree]! ||
-                            element.isGlutenFree) &&
-                        (!filters[FilterType.vegan]! ||
-                            element.isVegan) &&
-                        (!filters[FilterType.vegetarian]! ||
-                            element.isVegetarian) &&
-                        (!filters[FilterType.lactoseFree]! ||
-                            element.isLactoseFree))
-                .toList(),
-            toggleFavoriteMeal: toggleFavoriteMeal,
+            meals: filteredMeals,
           );
         }));
       },

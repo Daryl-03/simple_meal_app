@@ -12,16 +12,7 @@ final theme = ThemeData(
   textTheme: GoogleFonts.latoTextTheme(),
 );
 
-// final themeRed = ThemeData(
-//   useMaterial3: true,
-//   // colorScheme: ColorScheme.fromSeed(
-//   //   seedColor: Colors.blue,
-//   //   brightness: Brightness.light,
-//   // ),
-//   colorSchemeSeed: Colors.blue,
-//   brightness: Brightness.dark,
-//   textTheme: GoogleFonts.latoTextTheme(),
-// );
+
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
